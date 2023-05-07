@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>메인페이지</h1>
+    {% if user.is_authenticated %}
+    <a href="{% url 'user:signout' %}">로그아웃</a>
+    {% else %}
+    <a href="{% url 'user:signin' %}">로그인</a>
+    <a href="{% url 'user:signup' %}">회원가입</a>
+    {% endif %}
+
+    <hr />
+    {% for article in articles %}
+    <div>
+      {{article.title}} {{article.content}} {{article.author.username}}
+      <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
+      <a href="{% url 'article:destroy' id=article.id %}">글 삭제</a>
+    </div>
+    {% endfor %}
+  </body>
+</html>
