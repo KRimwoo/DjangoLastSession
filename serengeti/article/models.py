@@ -33,6 +33,12 @@ class Article(models.Model):
 
     tag = models.ManyToManyField('Tag', blank=True)
 
+    def __str__(self):
+        return self.title
+    
+    def summary(self):
+        return self.content[:100]
+
 
 
 class Comment(models.Model):

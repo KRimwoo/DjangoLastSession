@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+<!--<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,12 +9,6 @@
   </head>
   <body>
     <h1>메인페이지</h1>
-    {% if user.is_authenticated %}
-    <a href="{% url 'user:signout' %}">로그아웃</a>
-    {% else %}
-    <a href="{% url 'user:signin' %}">로그인</a>
-    <a href="{% url 'user:signup' %}">회원가입</a>
-    {% endif %}
 
     <hr />
     {% for article in articles %}
@@ -24,4 +19,51 @@
     </div>
     {% endfor %}
   </body>
-</html>
+</html>-->
+
+
+
+
+{% block title %}
+  Articles
+{% endblock title %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block content%}
+    {% for article in page_obj %}
+        {% if category_id is none or category_id == blog.category.id %}
+            <div class="article-list">
+                <a href="{%url 'article:detail' article.id%}">
+                    <h2>{{article.title}}</h2>
+                    <p class="summary">{{article.summary}}</p>
+                </a>
+                <p class="created-at">{{article.created_at}}</p>
+            </div>
+            <div>
+              <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
+              <a href="{% url 'article:destroy' id=article.id %}">글 삭제</a>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <span class=page-number>
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo;</a>
+        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+        {% endif %}
+    
+        {% for num in page_range %}
+            {% if num == page_obj.number %}
+                <span class="current-page">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+    
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number}}">&gt;</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+        {% endif %}
+    </span>
+{% endblock  %}

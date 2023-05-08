@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from .forms import ArticleForm
 from .models import Article, Category, Tag, Like, Comment
+import os
 
 # Create your views here.
 def new(request):
@@ -61,10 +62,12 @@ def new_comment(request, id):
 
 def destroy(request, id):
     article = get_object_or_404(Article, pk=id)
+    if article.image:
+        os.remove(article.image.path)
 
     article.delete()
 
-    return redirect('main:index.html')
+    return redirect('main:index')
 
 
 def like(request, id):
