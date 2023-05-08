@@ -10,4 +10,5 @@ class ArticleForm(forms.ModelForm):
             'category',
             'content',
             'image',
+            'tag',
         ]

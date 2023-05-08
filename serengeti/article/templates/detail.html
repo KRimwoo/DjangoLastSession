@@ -13,7 +13,9 @@
     <p>{{article.content}}</p>
     { % if article.image % }
     <img src="{{ article.image.url }}" alt="article-image" />
-    { % endif % }
+    { % endif % } {% for tag in tags %}
+    <p>{{ tag }}</p>
+    &nbsp; {% endfor %}
     <a href="{% url 'main:index' %}"></a>
   </body>
 </html>
