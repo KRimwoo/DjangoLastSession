@@ -1,21 +1,39 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    id : {{article.id}} <br />
-    <h1>{{article.title}}</h1>
-    <p>{{article.content}}</p>
-    { % if article.image % }
+{% extends 'base.html' %}
+{% block title %}
+  Article - 
+{% endblock title %}
+
+{% block extrahead %}
+{% endblock extrahead %}
+
+{% block content%}
+  id : {{article.id}} <br />
+  <h1>{{article.title}}</h1>
+  <p>{{article.content}}</p>
+  {% if article.image %}
     <img src="{{ article.image.url }}" alt="article-image" />
-    { % endif % } {% for tag in tags %}
-    <p>{{ tag }}</p>
-    &nbsp; {% endfor %}
-    <a href="{% url 'main:index' %}"></a>
-  </body>
-</html>
+  {% endif %} {% for tag in tags %}
+  <p>{{ tag }}</p> {% endfor %}
+  <a href="{% url 'main:index' %}"></a>
+  <form method="post">
+    {% csrf_token %}
+    {{ comment_form }}
+    <button type="submit">댓글 작성</button>
+  </form>
+
+  <a href="{% url 'article:like' article.id %}"> 
+    {% if request.user in likes %}
+            &#9829;
+    {% else %}
+            &#9825;
+    {% endif %}
+    좋아요 {{likes|length}}개
+  </a>
+
+  {% for comment in comments %}
+  <hr />
+  <p>{{comment.content}}</p>
+  <p>{{comment.created_at}} 댓글쓴이: {{ comment.author }}</p>
+  {% endfor %}
+
+{% endblock  %}

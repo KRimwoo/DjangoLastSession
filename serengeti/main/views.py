@@ -5,16 +5,15 @@ from django.core.paginator import Paginator
 # Create your views here.
 
 def base(request):
-    articles = Article.objects.all()
     categories = Category.objects.all()
     return (request, 'base.html', {'articles':articles, 'categories':categories})
 
 def index(request):
     category_id = request.GET.get('category')
     if category_id:
-        articles = Article.objects.filter(category__id = category_id)
+        articles = Article.objects.filter(category__id = category_id).order_by('-created_at')
     else:
-        articles = Article.objects.all()
+        articles = Article.objects.all().order_by('-created_at')
     categories = Category.objects.all()
     paginator = Paginator(articles, 3)
     page_number = request.GET.get('page')
