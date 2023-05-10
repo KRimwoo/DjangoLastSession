@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Edit Profile</title>
   </head>
   <body>
-     회원가입 페이지<br />
-    <form method="POST" action="{% url 'user:signup' %}">
-      {% csrf_token %} {{ form }}
-      <button type="submit">회원가입</button>
+     프로필 수정<br />
+    <form method="POST" action="{% url 'user:edit_profile' %}">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">수정</button>
     </form>
   </body>
 </html>

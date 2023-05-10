@@ -1,0 +1,59 @@
+.article-list {
+	width: 100%;
+	height: 8em;
+	display: flex;
+	flex-direction: row;
+	margin: 0 0 1em 1em;
+	border-bottom: 1px solid transparent;
+	border-image: linear-gradient(
+	  90deg,
+	  rgba(0, 0, 0, 0) 0%,
+	  rgba(22, 49, 114, 1) 21%,
+	  rgba(125, 185, 179, 1) 80%,
+	  rgba(125, 185, 179, 0) 100%
+	);
+	border-image-slice: 1;
+	padding-bottom: 0.5em;
+  }
+  
+  .article-list > a {
+	width: 70%;
+  }
+  
+  .article-list > a > h2 {
+	color: #163172;
+  }
+  
+  .article-list > a > .summary {
+	width: 100%;
+	padding-top: 1em;
+	align-items: center;
+	color: rgba(22, 49, 114, 0.8);
+	overflow: hidden;
+  }
+
+  
+  .article-list > .article-detail {
+	  width: 30%;
+	  color: rgba(125, 185, 179, 1);
+	}
+
+  
+  .page-number {
+	display: inline-block;
+	width: 100%;
+	height: 2em;
+	text-align: center;
+  }
+  
+  .page-number > a {
+	color: #163172;
+  }
+  
+  .page-number > a:visited {
+	color: #163172;
+  }
+  
+  .page-number > .current-page {
+	font-weight: bold;
+  }

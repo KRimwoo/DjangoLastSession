@@ -1,9 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'main/base.html' %}
+{% load static %}
 {% block title %}
-  Articles
+  Home
 {% endblock title %}
 
 {% block extrahead %}
+<link rel="stylesheet"  type="text/css" href="{% static "css/main/index.css"%}"> 
 {% endblock extrahead %}
 
 {% block content%}
@@ -14,13 +16,11 @@
                     <h2>{{article.title}}</h2>
                     <p class="summary">{{article.summary}}</p>
                 </a>
-                <p class="created-at">{{article.created_at}}</p>
-            </div>
-            <div>
-              {% if request.user == article.author %}
-                <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
-                <a href="{% url 'article:destroy' id=article.id %}">글 삭제</a>
-              {% endif %}
+                <div class="article-detail">
+                    <span class="writer">{{article.author}}</span>
+                    &nbsp;|&nbsp;&nbsp;
+                    <span class="created-at">{{article.created_at|date:"Y년 m월 d일"}}</span>
+                </div>
             </div>
         {% endif %}
     {% endfor %}

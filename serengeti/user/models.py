@@ -36,6 +36,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         auto_now = True,
     )
 
+    image = models.ImageField(upload_to="user/", blank=True)
+
     objects = UserManager()
 
     @property

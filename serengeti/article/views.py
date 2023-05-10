@@ -22,7 +22,7 @@ def new(request):
             form.save_m2m()
             return redirect('article:detail', id=article.id)
 
-    return render(request, 'new.html', {'form': form})
+    return render(request, 'article/new.html', {'form': form})
 
 def detail(request, id):
     article = get_object_or_404(Article, pk=id)
@@ -42,7 +42,7 @@ def detail(request, id):
     else:
         comment_form = CommentForm()
 
-    return render(request, 'detail.html', {'article': article, 'categories' : categories, 'tags': tags, 'likes': likes, 'comments': comments, 'comment_form': comment_form})
+    return render(request, 'article/detail.html', {'article': article, 'categories' : categories, 'tags': tags, 'likes': likes, 'comments': comments, 'comment_form': comment_form})
 
 def edit(request, id):
     article = get_object_or_404(Article, pk=id)
@@ -70,23 +70,10 @@ def edit(request, id):
             form.save_m2m()
             return redirect('article:detail', id=article.id)
         
-    return render(request, 'edit.html', {'form': form, 'article': article})
+    return render(request, 'article/edit.html', {'form': form, 'article': article})
 
 
-def create_comment(request, id):
-    comment = Comment()
-    comment.content = request.POST.get('content')
-    comment.blog = get_object_or_404(Article, pk=id)
-    comment.author = request.user
-    comment.save()
-    return redirect('detail', id)
-
-
-def new_comment(request, id):
-    article = get_object_or_404(Article, pk=id)
-    return render(request, 'new_comment.html', {'article': article})
-
-def destroy(request, id):
+def destroy_article(request, id):
     article = get_object_or_404(Article, pk=id)
     if article.image:
         os.remove(article.image.path)
@@ -94,6 +81,13 @@ def destroy(request, id):
     article.delete()
 
     return redirect('main:index')
+
+
+def destroy_comment(request, id):
+    comment = get_object_or_404(Comment, pk=id)
+    article_id = comment.article.pk
+    comment.delete()
+    return redirect('article:detail', id=article_id)
 
 
 def like(request, id):

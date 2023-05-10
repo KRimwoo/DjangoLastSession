@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import UserLoginForm, UserSignUpForm
+from .forms import UserLoginForm, UserSignUpForm, UserEditForm
 from django.contrib.auth import login, logout
 
 # Create your views here.
@@ -14,7 +14,7 @@ def signin(request):
             login(request, form.get_user())
             return redirect('main:index')
         
-    return render(request, 'signin.html', {'form': form})
+    return render(request, 'user/signin.html', {'form': form})
 
 def signup(request):
 
@@ -30,8 +30,19 @@ def signup(request):
             return redirect('main:index')
 
 
-    return render(request, 'signup.html', {'form':form})
+    return render(request, 'user/signup.html', {'form':form})
 
 def signout(request):
     logout(request)
     return redirect('main:index')
+
+def edit_profile(request):
+    if request.method == 'POST':
+        form = UserEditForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('main:index')
+    else:
+        form = UserEditForm(instance=request.user)
+
+    return render(request, 'user/useredit.html', {'form': form})

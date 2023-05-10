@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 def base(request):
     categories = Category.objects.all()
-    return (request, 'base.html', {'articles':articles, 'categories':categories})
+    return (request, 'main/base.html', {'articles':articles, 'categories':categories})
 
 def index(request):
     category_id = request.GET.get('category')
@@ -20,5 +20,5 @@ def index(request):
     page_obj = paginator.get_page(page_number)
 
     page_range = range(1, paginator.num_pages + 1)
-    return render(request, 'index.html', {'categories': categories, 'page_obj': page_obj, 'page_range': page_range})
+    return render(request, 'main/index.html', {'categories': categories, 'page_obj': page_obj, 'page_range': page_range})
 
