@@ -31,4 +31,4 @@ class CommentForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'rows': 5}),
         }
 
-        labels = {'content': '내용'}
+        labels = {'content': '댓글 쓰기'}

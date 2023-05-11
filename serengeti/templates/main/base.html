@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet"  type="text/css" href="{% static "css/main/base.css"%}"> 
-	{% block extrahead %}{% endblock extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/main/base.css"%}"> {% block extrahead %}{% endblock extrahead %}
   </head>
   <body>
     <header>
@@ -19,15 +18,17 @@
       <div class="functions">
         {% if user.is_authenticated %}
         <span>{{user.username}}님 환영합니다!</span>
+        &nbsp;
         <a href="{% url 'user:edit_profile' %}">정보 수정</a>
+        &nbsp;|&nbsp;
         <a href="{% url 'user:signout' %}">로그아웃</a>
         {% else %}
         <a href="{% url 'user:signin' %}">로그인</a>
+        &nbsp;|&nbsp;
         <a href="{% url 'user:signup' %}">회원가입</a>
         {% endif %}
-        <div class="button">
-          <button class="new"><a href="{%url 'article:new'%}">새 글 작성하기</a></button>
-        </div>
+        &nbsp;|&nbsp;
+        <a href="{%url 'article:new'%}">새 글 작성하기</a>
       </div>
     </header>
     <div class="content">
@@ -36,7 +37,11 @@
         <ul>
           <li><a href="{% url 'main:index' %}">- 전체</a></li>
           {% for category in categories %}
-          <li><a href="{% url 'main:index' %}?category={{ category.id }}">- {{ category.name }}</a></li>
+          <li>
+            <a href="{% url 'main:index' %}?category={{ category.id }}"
+              >- {{ category.name }}</a
+            >
+          </li>
           {% endfor %}
         </ul>
       </div>

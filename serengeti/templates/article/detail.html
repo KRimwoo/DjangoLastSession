@@ -1,49 +1,91 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block title %}
   Article | {{ article.title|title }}
 {% endblock title %}
 
 {% block extrahead %}
+<link rel="stylesheet"  type="text/css" href="{% static "css/article/detail.css" %}"> 
 {% endblock extrahead %}
 
 {% block content%}
-  <h1>{{article.title}}</h1>
-  <p>{{article.content}}</p>
-  {% if article.image %}
-    <img src="{{ article.image.url }}" alt="article-image" />
-  {% endif %} {% for tag in tags %}
-  <p>{{ tag }}</p> {% endfor %}
-  <div>
-    {% if request.user == article.author %}
-      <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
-      <a href="{% url 'article:destroy_article' id=article.id %}">글 삭제</a>
-    {% endif %}
+  <div class="detail-header">
+    <h2>{{article.title}}</h2>
+    <div class="date-cate">
+      <p>{{article.created_at}} &nbsp;| &nbsp;{{article.category}}</p>
+    </div>
+    <span>{{article.author}}&nbsp;&nbsp;</span>
   </div>
-  <form method="post">
-    {% csrf_token %}
-    {{ comment_form }}
-    <button type="submit">댓글 작성</button>
-  </form>
-
-  <a href="{% url 'article:like' article.id %}" title="좋아요 누른 사람: {{ likes|join:', ' }}"> 
-    {% if request.user in likes %}
-            &#9829;
-    {% else %}
-            &#9825;
+  <div class="detail-content">
+		<div class="text-section">
+			<p>{{article.content}}</p>
+		</div>
+    {% if article.image %}
+      <div class="image-section">
+        <img src="{{ article.image.url }}" alt="article-image" />
+      </div>
     {% endif %}
-    좋아요 {{likes|length}}개
-  </a>
-
-  {% for comment in comments %}
-  <div>
-    <hr />
-    <p>{{comment.content}}</p>
-    <p>{{comment.created_at}} 댓글쓴이: {{ comment.author }}</p>
-    {% if request.user == comment.author %}
-      <a href="{% url 'article:destroy_comment' id=comment.id %}">댓글 삭제</a>
+	</div>
+  <div class="additional">
+    <div class="like">
+      <a href="{% url 'article:like' article.id %}" title="좋아요 누른 사람: {{ likes|join:', ' }}"> 
+        {% if request.user in likes %}
+        &#9829;
+        {% else %}
+        &#9825;
+        {% endif %}
+        좋아요 {{likes|length}}개
+      </a>
+    </div>
+    {% if tags %}
+      <div class="tags">
+        {% for tag in tags %}
+          <span>#{{ tag }}</span>
+        {% endfor %}
+      </div>
     {% endif %}
+    <div class="article-edit">
+      {% if request.user == article.author %}
+        <a href="{% url 'article:edit' id=article.id %}">글 수정</a>
+        &nbsp;|&nbsp;
+        <a href="{% url 'article:destroy_article' id=article.id %}">글 삭제</a>
+      {% endif %}
+    </div>
   </div>
-  
-  {% endfor %}
+  <div class="comment-section">
+    <details open>
+      <summary>댓글</summary>
+      {% for comment in comments %}
+        <div class="comment">
+          <div class="indent">
+            <span>&#8627;</span>
+          </div>
+          <div class="cmt-box">
+            <div class="author-info">
+              {% if comment.author.image %}
+                <img class="author-icon" src="{{ comment.author.image.url }}" alt="User Image">
+              {% else %}
+                <div class="author-icon">{{ comment.author.username|first }}</div>
+              {% endif %}
+              <span class="cmt-writer">{{ comment.author }}</span>
+            </div>
+            <p class="cmt-content">{{comment.content}}</p>
+            <p class="date-info">{{ comment.created_at }}</p>
+            {% if request.user == comment.author %}
+            <a href="{% url 'article:destroy_comment' id=comment.id %}">댓글 삭제</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </details>
+  </div>
+
+  <div class="comment-form">
+    <form method="post">
+      {% csrf_token %}
+      {{ comment_form }}
+      <button type="submit">댓글 작성</button>
+    </form>
+  </div>
 
 {% endblock  %}

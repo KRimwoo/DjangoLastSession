@@ -5,7 +5,7 @@
 {% endblock title %}
 
 {% block extrahead %}
-<link rel="stylesheet"  type="text/css" href="{% static "css/main/index.css"%}"> 
+<link rel="stylesheet" type="text/css" href="{% static "css/main/index.css"%}"> 
 {% endblock extrahead %}
 
 {% block content%}
@@ -17,9 +17,11 @@
                     <p class="summary">{{article.summary}}</p>
                 </a>
                 <div class="article-detail">
-                    <span class="writer">{{article.author}}</span>
-                    &nbsp;|&nbsp;&nbsp;
-                    <span class="created-at">{{article.created_at|date:"Y년 m월 d일"}}</span>
+                    <div>
+                        <span class="writer">{{article.author}}</span>
+                        &nbsp;|&nbsp;&nbsp;
+                        <span class="created-at">{{article.created_at|date:"Y년 m월 d일"}}</span>
+                    </div>
                 </div>
             </div>
         {% endif %}

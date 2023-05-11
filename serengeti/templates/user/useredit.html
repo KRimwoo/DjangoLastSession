@@ -8,7 +8,11 @@
   </head>
   <body>
      프로필 수정<br />
-    <form method="POST" action="{% url 'user:edit_profile' %}">
+    <form
+      method="POST"
+      enctype="multipart/form-data"
+      action="{% url 'user:edit_profile' %}"
+    >
       {% csrf_token %} {{ form.as_p }}
       <button type="submit">수정</button>
     </form>
